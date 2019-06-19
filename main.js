@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron')
-const path = require('path')
+const StoreData = require('./renderer/MusicDataStore')
 
+const myStore = new StoreData({ name: 'Music data' })
 class AppWindow extends BrowserWindow {
   constructor(config, fileUrl) {
     const baseConfig = {
@@ -41,13 +42,20 @@ function createWindow () {
     }, 'renderer/add.html')
   })
 
-  ipcMain.on('open-music-file', () => {
+  ipcMain.on('open-music-file', (event) => {
     dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory', 'multiSelections'],
       filters: [{ name: 'Music', extensions: ['mp3'] }]
     }, (files) => {
-      console.log(files)
+      if (files) {
+        event.sender.send('selected-files', files)
+      }
     })
+  })
+
+  ipcMain.on('add-tracks', (event, tracks) => {
+    const update = myStore.addTracks(tracks).getTracks();
+    console.log(update)
   })
 }
 
