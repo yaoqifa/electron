@@ -27,6 +27,9 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new AppWindow({}, 'renderer/index.html')
 
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.send('getTracks', myStore.getTracks())
+  })
   // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
@@ -54,8 +57,8 @@ function createWindow () {
   })
 
   ipcMain.on('add-tracks', (event, tracks) => {
-    const update = myStore.addTracks(tracks).getTracks();
-    console.log(update)
+    const updatedTracks = myStore.addTracks(tracks).getTracks()
+    mainWindow.send('getTracks', updatedTracks)
   })
 }
 
