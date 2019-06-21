@@ -1,0 +1,26 @@
+.far {
+  font-style: normal;
+}
+.fa-music {
+  display: inline-block;
+  font-size: 18px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.fa-pause, .fa-play, .fa-trash-alt {
+  cursor: pointer;
+}
+
+.fa-play::after {
+  content: '播放';
+  display: inline-block;
+}
+
+.fa-pause::after {
+  content: '暂停';
+  display: inline-block;
+}

@@ -60,6 +60,11 @@ function createWindow () {
     const updatedTracks = myStore.addTracks(tracks).getTracks()
     mainWindow.send('getTracks', updatedTracks)
   })
+
+  ipcMain.on('delete-track', (event, id) => {
+    const updatedTracks = myStore.deleteTrack(id).getTracks()
+    mainWindow.send('getTracks', updatedTracks)
+  })
 }
 
 app.on('ready', createWindow)
